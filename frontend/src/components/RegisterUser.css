@@ -1,0 +1,19 @@
+
+.form{
+    max-width : 45%;
+    margin: auto;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    
+    background-color: beige;
+    border-radius: 5%;
+    
+}
+.form-group{
+    padding: 5px;
+    padding-bottom: 5px;
+}
+.btn{
+    padding-bottom: 5px;
+    margin-bottom: 5px;
+}

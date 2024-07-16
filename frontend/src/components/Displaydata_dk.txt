@@ -1,0 +1,66 @@
+import React from "react";
+// import {BrowserRouter} from 'react-router-dom';
+// import { Link } from "react-router-dom";
+import "./displayusers.css"
+let url ="http://localhost:9800/user"
+const Displayuser = (props) => {
+        const renderUser = props.userdata.map((item)=>{
+        return(
+            <>
+                {/* <div className=" d-flex justify-content-center"> */}
+                    {/* <table class="table table-hover"> */}
+                        <tbody>
+                            <tr>
+                                <th scope="row"></th>
+                                
+                                <td>{item.name}</td>
+                                <td>{item.email}</td>
+                                <td>{item.age}</td>
+                                <td>{item.address}</td>
+                                <td>
+                                    <button className="btn btn-success">Update</button>
+                                    <button className="btn btn-danger">delete</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    {/* </table> */}
+                {/* </div> */}
+
+        </>
+        )
+    })
+    
+    return (
+        <>
+        <div class="container ">
+            <div>
+                <button Link to={`/register`} className="btn btn-primary">Add New User</button>
+            </div>
+            <div id="tableHead row">
+        <div className=" d-flex justify-content-center">
+                <table className="table table-hover">
+                        <thead>
+                            <tr> 
+                                <th></th>
+                                <th>Name</th>
+                                <th>email</th>
+                                <th>age</th>
+                                <th>address</th>
+                                <th>action</th>
+                                
+                            </tr>
+                        </thead>
+                        {renderUser}
+                </table>
+        </div>
+            </div>
+            {/* <div id="tablebody row">
+            {renderUser}
+            </div>
+        </div> */}
+        </div>
+        </>
+    )
+}
+export default Displayuser;
+

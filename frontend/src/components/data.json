@@ -1,0 +1,26 @@
+[
+    {
+        "name":"Prasad Patil",
+        "email":"prasad@gmai.com",
+        "age":22,
+        "address":"Sinhgad Road, Pune"
+    },
+    {
+        "name":"Shraddha Chougule",
+        "email":"shraddha@gmai.com",
+        "age":22,
+        "address":"kothrud , Pune"
+    },
+    {
+        "name":"Nikhil kumar Bhatia",
+        "email":"nikhil1234@gmai.com",
+        "age":22,
+        "address":"pashan Road, Pune"
+    },
+    {
+        "name":"Nisha Patel",
+        "email":"nishapatel222@gmai.com",
+        "age":22,
+        "address":"Hinjewadi Road, Pune"
+    }
+]

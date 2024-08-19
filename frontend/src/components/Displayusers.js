@@ -109,4 +109,3 @@ const tablehead=()=>{
 }
 
 export default Displayuser;
-

@@ -1,11 +1,11 @@
-//Declearing Express Application
-let express = require('express');
-let app = express();
 //required Packages and Variables
-let port = 9800;
+let express = require('express');
 let cors = require('cors');
 let bodyParser = require('body-parser');
 let Mongo = require('mongodb')
+let port = 9800;
+//Declearing Express Application
+let app = express();
 //let {ObjectId} = require('mongodb');
 let {dbConnect,getData,postData,updateData,deleteData} = require("./controller/usercontroller");
 
@@ -55,9 +55,12 @@ app.put('/updateuser',async(req,res)=>{
 //delete User
 app.delete('/deleteuser',async(req,res)=>{
     let collection = "formdata";
-    let condition = {"_id":new Mongo.ObjectId(req.body._id)}
+    console.log(req.body)
+    let condition = {"_id":req.body._id}
     let output = await deleteData(collection,condition)
+    console.log(output)
     res.send(output)
+    
 });
 //app server setup
 app.listen(port,(err)=>{

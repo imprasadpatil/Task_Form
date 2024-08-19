@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useId } from "react";
 import "./RegisterUser.css"
 //import { useNavigate } from "react-router-dom";
 const posturl = 'http://localhost:9800/adduser'
@@ -10,7 +10,7 @@ const RegisterUser = () => {
 //let data =JSON.parse(sessionData)
 
 const initialValues = {
-    _id:Math.floor(Math.random()*1000000),
+    _id:useId,
     name:"",
     email:"",
     age:"",
@@ -35,6 +35,7 @@ const submit = () =>{
     },
     body:JSON.stringify(values)
     })
+    //alert("User registered Succssesfully....!!")
     //.then(navigate('/'))
 }
     return (

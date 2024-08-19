@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useId, useState } from "react";
 import "./RegisterUser.css"
 const updateurl = 'http://localhost:9800/updateuser'
 
@@ -8,7 +8,7 @@ const UpdateUser = (data) => {
 //let data =JSON.parse(sessionData)
 
 const initialValues = {
-    _id:Math.floor(Math.random()*1000000),
+    _id:useId,
     name:"data.name",
     email:"data.email",
     age:"data.age",

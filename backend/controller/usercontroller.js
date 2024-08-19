@@ -6,7 +6,6 @@ let client = new MongoClient(MongoUrl);
 async function dbConnect(){
     await client.connect();
 }
-
 let db = client.db('userdata');
 
 async function getData(colName,query){
@@ -48,7 +47,8 @@ async function deleteData(colName,condition){
     try{
         output = await db.collection(colName).deleteOne(condition);
     }catch(err){
-        output ={"response":"Error While Deleting User"}
+        console.log(err)
+            output ={"response":"Error While Deleting User"}
     }
     return output;
 }

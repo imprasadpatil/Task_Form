@@ -1,200 +1,177 @@
-import React from "react";
-//import axios from "axios"
-import { useState, useEffect, useId } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import "./displayusers.css"
-const baseUrl = 'http://localhost:9800'
-const apiurl = 'http://localhost:9800/getusers'
-const updateurl = 'http://localhost:9800/updateuser'
-const deleteturl = 'http://localhost:9800/deleteuser'
-const Displayuser = () =>{
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import "./displayusers.css";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
-    let [usersData,setusersData] = useState();
-    let [count,setCount] = useState()
-    // const userDetail = async() => {
-    //     const udata = await axios.get(url); 
-    //     //console.log(udata.data)
-    //     setusersData(udata.data)
-    // }
-    // useEffect(() => {
-    //     userDetail()
-    // },[]);
+// Variable: baseUrl that gets the value of API-url from .env 
+const baseUrl = process.env.REACT_APP_API_URL; //const baseUrl = 'http://localhost:9800'
+
+//function component : that have logic and returns the component
+const DisplayUser = () => {
+    const [usersData, setUsersData] = useState([]); //Variable : mutable global that hold userData
+    const [currentPage, setCurrentPage] = useState(1); //pagination variable
+    const recordsPerPage = 10; //no of records perpage is defined
+    
+    //Hook : useEffect that renders the displayuser component 
     useEffect(() => {
-        console.log("renderComponent")
-        fetch(`${baseUrl}/getusers`,
-            {method:'GET'}) 
-        //.then(res=>console.log(res.json))
-        .then((res) =>  res.json())
-        .then((data) => {
-            setusersData(data);
-            //let outArrya = [data.name,data.email.data.age,data.address]
-            //sessionStorage.setItem('userInfo',outArrya)
-            //console.log(outArrya)
+        fetchUsers();
+    }, []);
+
+    //function : fetchUser that feches the data from backend
+    const fetchUsers = () => {
+        fetch(`${baseUrl}/getusers`,                //API call : fetch 
+            { method: 'GET' })                      //Method : HTTP GET is defined for fetch call
+            .then((res) => res.json())             //Method : handles the response from API and convert it to json object
+            .then((data) => setUsersData(data))     //Method : sets data  recived from response to setUserData
+            .catch((error) => console.error('Error fetching users:', error));       //Method : handles the errors 
+    };
+    //function : deleting the user
+    const handleDeleteUser = (userId) => {  //parameter : userId is passed from function call 
+
+        fetch(`${baseUrl}/deleteuser/${userId}`, {              // API call : Fetch
+            method: 'DELETE',                                   // Method : DELETE that deletes the record from DataBase
+            headers: { 'Content-Type': 'application/json' }     // Sets the content type header to application/json.
         })
-    },[])
-    
-    //function that renders the user
-        const renderUser = (data)=>{
-                if(data){
-                    return data.map((item,index)=>{
-                        count = index+1
-                        return(
-                            <>
-                               <tbody>
-                                            <tr>
-                                                <th scope="row"></th>
-                                                <td>{count}</td>
-                                                <td>{item.name}</td>
-                                                <td>{item.email}</td>
-                                                <td>{item.age}</td>
-                                                <td>{item.address}</td>
-                                                <td>
-                                                    
-                                                    <button className="btn btn-success" onChange={HandelUpdateUser}>Update</button>
-                                                    
-                                                    <button className="btn btn-danger" onClick={()=>handelDeleteUser(data,index,count)}>delete</button>
-                                                </td>
-                                            </tr>
-                                </tbody>
-                           </>  
-                        )
-                    })
-                    
-                }
-            }
-    //Update user
-    const HandelUpdateUser = () => {
-    
-        let sessionData = sessionStorage.getItem('userData');   
-        let data =JSON.parse(sessionData)
-        
-         const initialValues = {
-             _id:useId,
-             name:"data.name",
-             email:"data.email",
-             age:"data.age",
-             address:"data.address"
-         }
-         const [values,setValues] = useState(initialValues);
-         const handleInputeChange = (e) =>{
-             const {name,value} = e.target;
-             setValues({
-                 ...values,
-                 [name]:value
-             })
-         }
-        
-         const submit = () =>{
-             console.log(values)
-             fetch(`${updateurl}`,
-             {method:'PUT',
-             headers:{
-                 'accept':'application/json',
-                 'Content-Type':'application/json'
-             },
-             body:JSON.stringify(values)
-             })
-         }
-            // return (
-            //     <>
-            //         <div className="container ">
-            //             <div className=" form d-flex justify-content-center">
-            //                 <form>
-            //                 {/* <h2>Personal  Form</h2> */}
-            //                 <hr />
-            //                 <h4>Update user Information</h4>
-            //                     <div className="form-group">
-            //                         <label for="fullName">Full Name</label>
-            //                         <input type="text" name="name" value={values.name} onChange={handleInputeChange} className="form-control" id="fullName" placeholder="Enter your full name" required />
-            //                     </div>
-            //                     <div className="form-group">
-            //                         <label for="email">Email</label>
-            //                         <input type="email" name="email" value={values.email} onChange={handleInputeChange} className="form-control" id="email" placeholder="Enter your email" required />
-            //                     </div>
-            //                     <div className="form-group">
-            //                         <label for="age">Age</label>
-            //                         <input type="number" name="age" value={values.age} onChange={handleInputeChange} className="form-control" id="age" placeholder="Enter your age" required />
-            //                     </div>
-            //                     <div className="form-group">
-            //                         <label for="address">Address</label>
-            //                         <input type="text" name="address" value={values.address} onChange={handleInputeChange} className="form-control" id="address" placeholder="Enter your address" required />
-            //                     </div>
-            //                     <button type="submit" onClick={submit} className="btn btn-primary d-flex justify-content-center">
-            //                         Add User
-            //                     </button>
-            //                 </form>
-            //             </div>
-            //         </div>
-        
-            //     </>
-           //  )
+            .then(response => {
+                if (!response.ok) throw new Error('Failed to delete user');
+                return response.json();
+            })
+            .then(() => {
+                console.log('User Deleted with Id : ',userId)
+                toast.error("User deleted successfully!", 
+                    {
+                        //autoClose: 1000,
+                        theme: "colored",
+                        position: "top-center"
+                    });
+                fetchUsers(); // Refresh user list after deletion
+            })
+            .catch(error => {
+                console.error(error);
+                toast.error(error.message , {theme: "colored"});
+            });
+    };
 
-            return(
-                <>
-                    <h1>Update User</h1>
-                </>
-            )
+    // Calculate the index of the first and last records on the current page
+    const indexOfLastRecord = currentPage * recordsPerPage;
+    const indexOfFirstRecord = indexOfLastRecord - recordsPerPage;
+    const currentRecords = usersData.slice(indexOfFirstRecord, indexOfLastRecord);
+
+    //function : that renders user in table row 
+    const renderUsers = () => {
+        return currentRecords.map((item, index) => (
+            <tbody>
+                <tr key={item._id}>
+                    <td>{indexOfFirstRecord + index + 1}</td> {/* Adjust index for pagination */}
+                    <td>{item.name}</td>
+                    <td>{item.email}</td>
+                    <td>{item.age}</td>
+                    <td>{item.address}</td>
+                    <td>
+                        <Link to={`./Updateuser/${item._id}`}>
+                            <button className="btn btn-success">Update</button>
+                        </Link>
+                        <button className="btn btn-danger"
+                            onClick={() => handleDeleteUser(item._id)}>
+                            Delete
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        ));
+    };
+
+    // Calculate total pages
+    const totalPages = Math.ceil(usersData.length / recordsPerPage);
+
+    //function : handles the pagination 
+    const handlePageChange = (pageNumber) => {
+        setCurrentPage(pageNumber);
+    };
+
+    //function : returns the pagination
+    const renderPagination = () => {
+        const pages = [];
+        for (let i = 1; i <= totalPages; i++) {
+            pages.push(
+                <button
+                    key={i}
+                    onClick={() => handlePageChange(i)}
+                    className={`btn ${currentPage === i ? 'btn-primary' : 'btn-secondary'}`}
+                    style={{ margin: '0 5px' }}
+                >{i}</button> 
+            );
         }
-    //Delete user
-    const handelDeleteUser = (data,index) => {
-        console.log(data[index])
-        fetch(`${baseUrl}/deleteuser`,
-            {
-                method: 'DELETE',
-                /*headers: {
-                    'accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },*/
-                body: JSON.stringify(data[index]._id)
-            })
-            .then(response=>response.json())
-            .then(response =>{
-                console.log(response)
-                if (!response.ok) {
-                    alert (new Error('Failed to delete user'))    
-                }
-            })
-            
+        return pages;
+    };
+
+    const handlePrevPage = () => {
+        if (currentPage > 1) {
+            setCurrentPage(currentPage - 1);
+        }
+    };
+
+    const handleNextPage = () => {
+        if (currentPage < totalPages) {
+            setCurrentPage(currentPage + 1);
+        }
+    };
+
+    //function : returns table head
+    const renderTableHead = () => {
+        return (
+            <thead className="thead-dark">
+                <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Age</th>
+                    <th>Address</th>
+                    <th>Actions.</th>
+                </tr>
+            </thead>
+        )
     }
-const tablehead=()=>{
-    return(
-        <>
-                    <thead>
-                        <tr> 
-                            <th></th>
-                            <td>#</td>
-                            <td>Name</td>
-                            <td>email</td>
-                            <td>age</td>
-                            <td>address</td>
-                            <td>action</td>                  
-                        </tr>
-                    </thead>
-        </>
-    )
-        }
-    
+
+    // renders the actual UI content 
     return (
-        <>
-        <div className="container ">
+        <div className="container">
             <div>
-                <Link to={'/register'}>
-                <button className="btn btn-primary">
-                    Add New User
-                </button>
+                <Link to="/register">
+                    <button className="btn btn-primary">Add New User</button>
                 </Link>
-                
             </div>
-            <div className=" d-flex justify-content-center">
+            <div className="d-flex justify-content-center">
                 <table className="table table-hover">
-                {tablehead()}
-                {renderUser(usersData)}
+                    {renderTableHead()}
+                    {renderUsers()}
                 </table>
-                </div> 
             </div>
-        </>
-    )
-}
+            <div className="pagination d-flex justify-content-center">
+                <button
+                    onClick={handlePrevPage}
+                    className="btn btn-secondary"
+                    disabled={currentPage === 1}
+                    style={{ margin: '0 5px' }}
+                >
+                    Prev
+                </button>
+                {renderPagination()}
+                <button
+                    onClick={handleNextPage}
+                    className="btn btn-secondary"
+                    disabled={currentPage === totalPages}
+                    style={{ margin: '0 5px' }}
+                >
+                    Next
+                </button>
+            </div>
+            <ToastContainer/>
+        </div>
+    );
+};
 
-export default Displayuser;
 
+
+export default DisplayUser;

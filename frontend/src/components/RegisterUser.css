@@ -1,9 +1,10 @@
 
-.form{
+form{
     max-width : 45%;
     margin: auto;
     margin-top: 20px;
     margin-bottom: 20px;
+    padding: 30px;
     
     background-color: beige;
     border-radius: 5%;

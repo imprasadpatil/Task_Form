@@ -7,8 +7,8 @@ async function dbConnect(){
     await client.connect();
 }
 let db = client.db('userdata');
-
-async function getData(colName,query){
+// Get All Users data
+async function getAllData(colName,query){
     let output = [];
     try{
         const cursor = db.collection(colName).find(query);
@@ -20,6 +20,15 @@ async function getData(colName,query){
         output = ({"Error":"Error While Getting the Data"})
     }
     return output;
+}
+// Get User By Id
+async function getDataById(colName, condition) {
+    try {
+        const user = await db.collection(colName).findOne(condition);
+        return user ? [user] : []; // Return an array with the user object or an empty array if not found
+    } catch (err) {
+        return { "Error": "Error While Getting the Data" };
+    }
 }
 
 async function postData(colName,data){
@@ -55,7 +64,8 @@ async function deleteData(colName,condition){
 
 module.exports = {
     dbConnect,
-    getData,
+    getAllData,
+    getDataById,
     postData,
     updateData,
     deleteData

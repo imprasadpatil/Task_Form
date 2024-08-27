@@ -1,22 +1,24 @@
 import React from "react";
-import { BrowserRouter,Route,Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Main from "./Main";
 import Navbar from './Navbar';
 import Footer from './Footer';
-//import Home from "./Home";
-import Displayuser from "./Displayusers";
 import RegisterUser from './RegisterUser';
 import UpdateUser from "./Updateuser";
-import Demo from "./Demo";
-const Router =()=>{
-    return(
+import DisplayUser from "./Displayusers";
+import Admin from "./Admin";
+//import SampleUser from "./SampleUser";
+const Router  = () => {
+    return (
         <BrowserRouter>
             <Navbar/>
-                <Routes>
-                    <Route path="/" element={<Displayuser/>}/>
-                    <Route path="/register" element={<RegisterUser/>}/>
-                    <Route path="/updateuser" element={<UpdateUser/>}/>
-                    <Route path="/demo" element={<Demo/>}/>
-                </Routes>
+            <Routes>
+                <Route path="/" element ={<Main/>}/>
+                <Route index element={<DisplayUser/>}/>
+                <Route path="/register" element={<RegisterUser />}/>
+                <Route path="/updateuser/:id" element={<UpdateUser/>}/>
+                <Route path="/admin" element ={<Admin/>}/>
+            </Routes>
             <Footer/>
         </BrowserRouter>
     )
